@@ -1,21 +1,21 @@
 from unittest.mock import MagicMock
 import pytest
 
-from dao.model.movie import Movie
-from dao.movie import MovieDAO
-from service.movie import MovieService
+from app.dao.model.movie import Movie
+from app.dao.movie import MovieDAO
+from app.service.movie import MovieService
 
 
 @pytest.fixture()
 def movie_dao():
     movie_dao = MovieDAO(None)
 
-    jonh = Movie(id=1, title='Что-нибудь', description='Как-нибудь', trailer='Тут', year=2005, rating=5.2, genre_id=1, director_id=1)
-    kate = Movie(id=1, title='Вот это', description='Здесь', trailer='Произошло', year=2007, rating=6.4, genre_id=2, director_id=2)
-    max = Movie(id=3, title='Как здесь', description='Это', trailer='Оказалось?', year=2013, rating=7.3, genre_id=3, director_id=3)
+    movie1 = Movie(id=1, title='Что-нибудь', description='Как-нибудь', trailer='Тут', year=2005, rating=5.2, genre_id=1, director_id=1)
+    movie2 = Movie(id=1, title='Вот это', description='Здесь', trailer='Произошло', year=2007, rating=6.4, genre_id=2, director_id=2)
+    movie3 = Movie(id=3, title='Как здесь', description='Это', trailer='Оказалось?', year=2013, rating=7.3, genre_id=3, director_id=3)
 
-    movie_dao.get_one = MagicMock(return_value=jonh)
-    movie_dao.get_all = MagicMock(return_value=[jonh, kate, max])
+    movie_dao.get_one = MagicMock(return_value=movie1)
+    movie_dao.get_all = MagicMock(return_value=[movie1, movie2, movie3])
     movie_dao.create = MagicMock(return_value=Movie(id=4))
     movie_dao.delete = MagicMock()
     movie_dao.update = MagicMock()
@@ -41,7 +41,11 @@ class TestMovieService:
 
     def test_create(self):
         movie_d = {
-            "name": "Ivan"
+            "title": "Film 2",
+            "description": "desc 2",
+            "trailer": "...",
+            "year": 2026,
+            "rating": 11
         }
         movie = self.movie_service.create(movie_d)
 
@@ -52,7 +56,11 @@ class TestMovieService:
 
     def test_update(self):
         movie_d = {
-            "id": 3,
-            "name": "Ivan"
+            "id": 1,
+            "title": "Film",
+            "description": "desc",
+            "trailer": "...",
+            "year": 2025,
+            "rating": 11
         }
         self.movie_service.update(movie_d)
